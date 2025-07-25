@@ -192,6 +192,28 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 20px;
 }
 
+/* ===== POST DETAIL ===== */
+.post header .author-avatar {
+    flex-shrink: 0;
+}
+
+.post .display-5 {
+    color: var(--text-color);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.post .text-content.fs-5 {
+    font-size: 1.125rem !important;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.post .text-content.lh-lg {
+    line-height: 1.8 !important;
+}
+
 /* ===== DATA ===== */
 .date {
     color: var(--text-muted);
@@ -280,6 +302,40 @@ footer a:hover {
     text-decoration: underline;
 }
 
+/* ===== PAGINAÇÃO ===== */
+.pagination {
+    gap: 4px;
+}
+
+.pagination .page-link {
+    color: var(--text-secondary);
+    background-color: var(--background-color);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    padding: 8px 12px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.pagination .page-link:hover {
+    color: var(--primary-color);
+    background-color: var(--surface-color);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+    border-radius: var(--border-radius-sm);
+}
+
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
     .page-header h1 {
@@ -339,19 +395,55 @@ footer a:hover {
     pointer-events: none;
 }
 
-/* ===== FORMULÁRIOS (para futuras implementações) ===== */
-.post-form textarea, 
-.post-form input {
+/* ===== FORMULÁRIOS ===== */
+.post-form .form-control,
+.post-form input[type="text"],
+.post-form textarea {
     width: 100%;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    padding: 10px;
+    border-radius: var(--border-radius-sm);
+    border: 2px solid var(--border-color);
+    padding: 12px 16px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
-.post-form textarea:focus,
-.post-form input:focus {
+.post-form .form-control:focus,
+.post-form input[type="text"]:focus,
+.post-form textarea:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(194, 81, 0, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.15);
+    outline: none;
+}
+
+.post-form textarea {
+    min-height: 200px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.6;
+}
+
+.post-form .form-label {
+    color: var(--text-color);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.post-form .form-text {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-top: 6px;
+}
+
+/* Estilização automática dos campos do Django */
+.post-form input#id_title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.post-form textarea#id_text {
+    font-family: inherit;
 }
 
 .save {
@@ -362,7 +454,24 @@ footer a:hover {
 .top-menu:hover, 
 .top-menu:visited {
     color: #ffffff;
-    float: right;
-    font-size: 26pt;
-    margin-right: 20px;
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    font-size: 2rem;
+    z-index: 1030;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+}
+
+.top-menu:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
 }

@@ -4,70 +4,91 @@
 
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="{% url 'post_list' %}"><i class="bi bi-house"></i> Início</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">{{ post.title|truncatechars:50 }}</li>
-    </ol>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a href="{% url 'post_list' %}">
+				<i class="bi bi-house"></i> Início
+			</a>
+		</li>
+		<li class="breadcrumb-item active" aria-current="page">
+			{{ post.title|truncatechars:50 }}
+		</li>
+	</ol>
 </nav>
 {% endblock %}
 
 {% block content %}
-    <div class="mb-3">
-        <a href="{% url 'post_list' %}" class="btn btn-outline-secondary btn-back">
-            <i class="bi bi-arrow-left"></i> Voltar aos posts
-        </a>
-    </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+	<a href="{% url 'post_list' %}" class="btn btn-outline-primary btn-back">
+		<i class="bi bi-arrow-left"></i> Voltar aos posts
+	</a>
+	{% if user.is_authenticated %}
+		<a class="btn btn-outline-secondary" href="{% url 'post_edit' pk=post.pk %}" title="Editar post">
+			<i class="bi bi-pencil"></i> Editar
+		</a>
+	{% endif %}
+</div>
 
-    <article class="post">
-        <header class="mb-4">
-            {% if post.published_date %}
-                <div class="date mb-2">
-                    <i class="bi bi-calendar3"></i>
-                    Publicado em {{ post.published_date|date:"d \d\e F \d\e Y \à\s H:i" }}
-                </div>
-            {% endif %}
-            
-            {% if post.author %}
-                <div class="mb-3">
-                    <small class="text-muted">
-                        <i class="bi bi-person"></i> 
-                        Por {{ post.author.get_full_name|default:post.author.username }}
-                    </small>
-                </div>
-            {% endif %}
-            
-            <h1>{{ post.title }}</h1>
-        </header>
-        
-        <div class="text-content">
-            {{ post.text|linebreaksbr }}
-        </div>
-        
-        <footer class="mt-4 pt-3 border-top">
-            <div class="row">
-                <div class="col-md-6">
-                    <small class="text-muted">
-                        <i class="bi bi-clock"></i> 
-                        Criado em {{ post.created_date|date:"d/m/Y H:i" }}
-                    </small>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="{% url 'post_list' %}" class="btn btn-primary">
-                        <i class="bi bi-arrow-left"></i> Ver todos os posts
-                    </a>
-                </div>
-            </div>
-        </footer>
-    </article>
+<article class="post">
+	<header class="mb-4">
+		<div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+			{% if post.published_date %}
+				<div class="date">
+					<i class="bi bi-calendar3"></i>
+					{{ post.published_date|date:"d \d\e F \d\e Y" }}
+				</div>
+			{% endif %}
+			
+			{% if post.author %}
+				<div class="d-flex align-items-center">
+					<div class="author-avatar me-2">
+						<i class="bi bi-person-circle text-primary" style="font-size: 1.5rem;"></i>
+					</div>
+					<small class="text-muted fw-medium">
+						Por {{ post.author.get_full_name|default:post.author.username }}
+					</small>
+				</div>
+			{% endif %}
+		</div>
 
-    <!-- Seção para comentários futuros -->
-    <section class="mt-5">
-        <h3><i class="bi bi-chat-dots"></i> Comentários</h3>
-        <div class="alert alert-info">
-            <i class="bi bi-info-circle"></i>
-            Sistema de comentários em desenvolvimento. Em breve você poderá interagir com os posts!
-        </div>
-    </section>
+		<h1 class="display-5 fw-bold mb-4">{{ post.title }}</h1>
+	</header>
+
+	<div class="text-content fs-5 lh-lg">
+		{{ post.text|linebreaksbr }}
+	</div>
+
+	<footer class="mt-5 pt-4 border-top">
+		<div class="row align-items-center">
+			<div class="col-md-6">
+				<div class="d-flex align-items-center text-muted">
+					<i class="bi bi-clock me-2"></i>
+					<small>Criado em {{ post.created_date|date:"d/m/Y \à\s H:i" }}</small>
+				</div>
+			</div>
+			<div class="col-md-6 text-md-end mt-3 mt-md-0">
+				<a href="{% url 'post_list' %}" class="btn btn-primary">
+					<i class="bi bi-grid-3x3-gap"></i> Ver todos os posts
+				</a>
+			</div>
+		</div>
+	</footer>
+</article>
+
+<!-- Seção para comentários futuros -->
+<section class="mt-5 p-4 rounded-3" style="background: var(--surface-color); border: 1px solid var(--border-light);">
+	<div class="d-flex align-items-center mb-3">
+		<i class="bi bi-chat-dots text-primary me-2" style="font-size: 1.5rem;"></i>
+		<h3 class="mb-0 h4">Comentários</h3>
+	</div>
+	<div class="alert alert-info border-0 mb-0" style="background: linear-gradient(135deg, #dbeafe, #e0f2fe);">
+		<div class="d-flex align-items-start">
+			<i class="bi bi-info-circle text-info me-3 mt-1"></i>
+			<div>
+				<strong>Sistema em desenvolvimento</strong><br>
+				<small class="text-muted">Em breve você poderá interagir com os posts através de comentários!</small>
+			</div>
+		</div>
+	</div>
+</section>
 {% endblock %}
