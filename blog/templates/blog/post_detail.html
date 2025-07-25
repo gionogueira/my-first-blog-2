@@ -1,0 +1,73 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }} - {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'post_list' %}"><i class="bi bi-house"></i> Início</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{ post.title|truncatechars:50 }}</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-3">
+        <a href="{% url 'post_list' %}" class="btn btn-outline-secondary btn-back">
+            <i class="bi bi-arrow-left"></i> Voltar aos posts
+        </a>
+    </div>
+
+    <article class="post">
+        <header class="mb-4">
+            {% if post.published_date %}
+                <div class="date mb-2">
+                    <i class="bi bi-calendar3"></i>
+                    Publicado em {{ post.published_date|date:"d \d\e F \d\e Y \à\s H:i" }}
+                </div>
+            {% endif %}
+            
+            {% if post.author %}
+                <div class="mb-3">
+                    <small class="text-muted">
+                        <i class="bi bi-person"></i> 
+                        Por {{ post.author.get_full_name|default:post.author.username }}
+                    </small>
+                </div>
+            {% endif %}
+            
+            <h1>{{ post.title }}</h1>
+        </header>
+        
+        <div class="text-content">
+            {{ post.text|linebreaksbr }}
+        </div>
+        
+        <footer class="mt-4 pt-3 border-top">
+            <div class="row">
+                <div class="col-md-6">
+                    <small class="text-muted">
+                        <i class="bi bi-clock"></i> 
+                        Criado em {{ post.created_date|date:"d/m/Y H:i" }}
+                    </small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{% url 'post_list' %}" class="btn btn-primary">
+                        <i class="bi bi-arrow-left"></i> Ver todos os posts
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </article>
+
+    <!-- Seção para comentários futuros -->
+    <section class="mt-5">
+        <h3><i class="bi bi-chat-dots"></i> Comentários</h3>
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            Sistema de comentários em desenvolvimento. Em breve você poderá interagir com os posts!
+        </div>
+    </section>
+{% endblock %}

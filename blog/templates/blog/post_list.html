@@ -1,26 +1,79 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Blog Django Girls</title>
-	</head>
-	<body>
-		<div>
-			<h1><a href="/">Blog Django Girls</a></h1>
-		</div>
+{% extends 'blog/base.html' %}
 
-        {% for post in posts %}
-            <div>
-                <p>publicado: {{ post.published_date }}</p>
-                <h2><a href="">{{ post.title }}</a></h2>
-                <p>
-                    {{ post.text|linebreaks }}
-                </p>
+{% block title %}Início - {{ block.super }}{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">
+            <i class="bi bi-house"></i> Início
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+    {% if posts %}
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h2><i class="bi bi-journal-text"></i> Posts Recentes</h2>
+                <p class="text-muted">Confira os últimos artigos do nosso blog</p>
             </div>
+        </div>
+        
+        {% for post in posts %}
+            <article class="post">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="date">
+                        <i class="bi bi-calendar3"></i>
+                        {{ post.published_date|date:"d M Y" }}
+                    </div>
+                    {% if post.author %}
+                        <small class="text-muted">
+                            <i class="bi bi-person"></i> {{ post.author.get_full_name|default:post.author.username }}
+                        </small>
+                    {% endif %}
+                </div>
+                
+                <h2>
+                    <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+                </h2>
+                
+                <div class="text-content">
+                    {% if post.text|length > 300 %}
+                        {{ post.text|truncatewords:50|linebreaksbr }}
+                        <p class="mt-2">
+                            <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-arrow-right"></i> Leia mais
+                            </a>
+                        </p>
+                    {% else %}
+                        {{ post.text|linebreaksbr }}
+                    {% endif %}
+                </div>
+                
+                <div class="mt-3 pt-2 border-top">
+                    <small class="text-muted">
+                        <i class="bi bi-eye"></i> 
+                        <a href="{% url 'post_detail' pk=post.pk %}" class="text-decoration-none">
+                            Ver post completo
+                        </a>
+                    </small>
+                </div>
+            </article>
         {% endfor %}
-	</body>
-</html>
-
-	</body>
-</html>
+        
+        <!-- Paginação (para implementação futura) -->
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Navegação das páginas">
+                <!-- Aqui você pode adicionar paginação no futuro -->
+            </nav>
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-journal-x display-1 text-muted"></i>
+            <h3 class="mt-3">Nenhum post encontrado</h3>
+            <p class="text-muted">Ainda não há posts publicados. Volte mais tarde!</p>
+        </div>
+    {% endif %}
+{% endblock %}
